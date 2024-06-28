@@ -6,7 +6,7 @@
 
 21cm_pie is a machine learning based tool for fast simulations-based inference from simulated 3D 21cm light cone data.  It contains modules to simulate and infer the posterior for a 6d parameter set. 
 
-## Animation
+## 
 
 <img src="animation/animation.gif" width="600" height="600" alt="Animation">
 
@@ -16,7 +16,7 @@
 # clone the repository
 git clone https://github.com/cosmostatistics/21cm_pie
 # then install in dev mode
-cd 21cmPie
+cd 21cm_pie
 pip install --editable .
 ```
 
@@ -28,13 +28,13 @@ Simulating data with [21cmFAST][21cmFAST] and adding noise with [21cmSense][21cm
 [21cmSense]: https://github.com/jpober/21cmSense
 
 ```
-21cm_pie data params/data.yaml
+21cm_pie data params/data.yaml --verbose
 ```
 Training the model, typically done in three stages, first the 3D CNN, then the INN and finally both:
 ```
-21cm_pie train params/train.yaml
+21cm_pie train params/train.yaml --verbose
 ```
 Analysing the performance and creating inference plots
 ```
-21cm_pie plot params/plot.yaml
+21cm_pie plot params/plot.yaml --verbose
 ```
