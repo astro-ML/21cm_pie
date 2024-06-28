@@ -4,17 +4,17 @@
 <a href="https://arxiv.org/abs/2401.04174"><img alt="Arxiv" src="https://img.shields.io/badge/arXiv-2401.04174-b31b1b.svg"></a>
 
 
-21cm_pie is a machine learning based tool for fast simulations-based inference from simulated 3D 21cm light cone data.  It contains modules to simulate and infer the posterior for 6d parameter set. 
+21cm_pie is a machine learning based tool for fast simulations-based inference from simulated 3D 21cm light cone data.  It contains modules to simulate and infer the posterior for a 6d parameter set. 
 
 ## Animation
 
-![Animation](animation/animation.gif)
+<img src="animation/animation.gif" width="600" height="600" alt="Animation">
 
 ## Installation
 
 ```sh
 # clone the repository
-git clone https://github.com/cosmostatistics/21cmPie
+git clone https://github.com/cosmostatistics/21cm_pie
 # then install in dev mode
 cd 21cmPie
 pip install --editable .
