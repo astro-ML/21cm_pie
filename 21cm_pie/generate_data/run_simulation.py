@@ -35,7 +35,6 @@ class Simulation:
         if self.params['noise']['add']:
             self.destination_noise = self.params['noise']['destination']
             os.makedirs(self.destination_noise, exist_ok=True)
-        logging.info('Start creating Simulations')
         separator()
     
     def find_name(self) -> str:
@@ -47,7 +46,7 @@ class Simulation:
         """
         i = 1
         filename = self.destination+'/run'+str(i)+'.npz'
-        while(filename in glob.glob(self.destination+'*')):
+        while(filename in glob.glob(self.destination+'/*')):
             i += np.random.randint(1, 10000)
             filename = self.destination+'/run'+str(i)+'.npz'
         self.cache_dest = '.cache/_cache'+str(i)
@@ -76,7 +75,7 @@ class Simulation:
             Tvir = 4.69897
             Zeta = 30.0
             
-        return np.array([OMm, WDM, Tvir, Zeta, LX, E0])
+        return np.array([WDM, OMm, E0, LX, Tvir, Zeta])
     
     def run_sim(self, parameters: np.array) -> p21c.LightCone:
         """
@@ -92,12 +91,7 @@ class Simulation:
         BOX_LEN = 200
         Z_MIN = 5.0
         N_THREAD = self.params['create']['threads']
-        OMm = parameters[0]
-        WDM = parameters[1]
-        Tvir = parameters[2]
-        Zeta = parameters[3]
-        LX = parameters[4]
-        E0 = parameters[5]
+        WDM, OMm, E0, LX, Tvir, Zeta = parameters
         logging.info(f'Running simulation with parameters: {parameters}')
         p21c.inputs.global_params.M_WDM = WDM
         lightcone = p21c.run_lightcone(
@@ -176,7 +170,6 @@ class Simulation:
         with open("21cm_pie/generate_data/redshifts5.npy", "rb") as data:
             box_redshifts = list(np.load(data, allow_pickle=True))
             box_redshifts.sort()
-        
         cosmo_params = p21c.CosmoParams(OMm=parameters[1])
         astro_params = p21c.AstroParams(INHOMO_RECO=True)
         user_params = p21c.UserParams(HII_DIM=140, BOX_LEN=200)
@@ -184,7 +177,6 @@ class Simulation:
         sim_lightcone = p21c.LightCone(5., user_params, cosmo_params, astro_params, flag_options, 0,
                                        {"brightness_temp": brightness_temp}, 35.05)
         redshifts = sim_lightcone.lightcone_redshifts
-        
         box_len = np.array([])
         y = 0
         z = 0
@@ -194,15 +186,11 @@ class Simulation:
                 y += 1
                 z = x
         box_len = np.append(box_len, x - z + 1)
-        
-        delta_T_split = False
         y = 0
+        delta_T_split = []
         for x in box_len:
-            if delta_T_split is False:
-                delta_T_split = [brightness_temp[:, :, int(y):int(x + y)]]
-            else:
-                delta_T_split.append(brightness_temp[:, :, int(y):int(x + y)])
-            y += x
+            delta_T_split.append(brightness_temp[:,:,int(y):int(x+y)])
+            y+=x
             
         mock_lc = np.zeros(brightness_temp.shape)
         cell_size = 200 / 140
@@ -219,7 +207,7 @@ class Simulation:
             volume = hii_dim * hii_dim * box_len[x] * cell_size ** 3
             err21a = np.random.normal(loc=0.0, scale=1.0, size=(hii_dim, hii_dim, int(box_len[x])))
             err21b = np.random.normal(loc=0.0, scale=1.0, size=(hii_dim, hii_dim, int(box_len[x])))
-            deldel_T = np.fft.rfftn(delta_T_split[x], s=(hii_dim, hii_dim, box_len[x]))
+            deldel_T = np.fft.rfftn(delta_T_split[x], s=(hii_dim, hii_dim, int(box_len[x])))
             deldel_T_noise = np.zeros((hii_dim, hii_dim, int(box_len[x])), dtype=np.complex_)
             deldel_T_mock = np.zeros((hii_dim, hii_dim, int(box_len[x])), dtype=np.complex_)
             
@@ -251,11 +239,13 @@ class Simulation:
         """
         Create multiple lightcone simulations based on the parameters.
         """
+        logging.info('Start creating Simulations')
         N = self.params['create']['n_sims']
         j = 0
         while j < N:
             logging.info(f'Creating lightcone {j + 1}/{N}')
             filename = self.find_name()
+            logging.info(f'Saving to {filename}')
             parameters = self.sample_parameters()
             lightcone = self.run_sim(parameters)
             if self.filter_limits(lightcone):
