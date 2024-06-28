@@ -1,0 +1,26 @@
+# virtual environment
+/venv
+
+#job script
+/params
+!/params/data.yaml
+!/params/train.yaml
+!/params/plot.yaml
+
+
+#egg file
+21cm_pie.egg-info
+
+#output files
+/output
+# except best_models
+!/output/best_noise
+!/output/best_sim
+
+# cache from 21cmFAST
+/.cache
+
+# data
+/simulations
+/nosie_sim
+/create_data
