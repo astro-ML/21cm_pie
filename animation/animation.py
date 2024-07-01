@@ -99,10 +99,10 @@ parameters_shuffle=[["OMm",0.2,0.4,r"$\Omega_m$",r"\Omega_m",''],["WDM",0.3,10,r
 lab=[parameters_shuffle[para][3] for para in range(len(parameters_shuffle))]
 
 lc_num = np.arange(30)
-lc_paths = ['../mocks/output/run_default.npz']
-sample_paths = ['../output/test_posteriors_opt_grid/dist_default.npz']
-path_base = '../mocks/output/run'
-sample_base = '../output/test_posteriors_opt_grid/dist'
+lc_paths = ['../data/mocks/run_default.npz']
+sample_paths = ['../tests/test_posteriors_opt_grid/dist_default.npz']
+path_base = '../data/mocks/run'
+sample_base = '../tests/test_posteriors_opt_grid/dist'
 for l in lc_num:
     lc_path = path_base+str(l)+'.npz'
     sample_path = sample_base+str(l)+'.npz'
@@ -110,8 +110,8 @@ for l in lc_num:
         continue
     lc_paths.append(lc_path)
     sample_paths.append(sample_path)
-lc_paths.append('../mocks/output/run_default.npz')
-sample_paths.append('../output/test_posteriors_opt_grid/dist_default.npz')
+lc_paths.append('../data/mocks/run_default.npz')
+sample_paths.append('../tests/test_posteriors_opt_grid/dist_default.npz')
 _,labels_fid = read_samples(sample_paths[0])
     
 color='darkred'
