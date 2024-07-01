@@ -36,13 +36,13 @@ Analysing the performance and creating inference plots
 ```
 21cm_pie plot params/plot.yaml --verbose
 ```
-Trained networks for the inference of simulated (with and without noise) data are stored in 'output/'.
+Trained networks for the inference of simulated (with and without noise) data are stored in ```output/```.
 
 ## Acknowledgements
 
 If you use any part of this repository please cite the following paper:
 
-'''
+```
 @article{Schosser:2024aic,
     author = "Schosser, Benedikt and Heneka, Caroline and Plehn, Tilman",
     title = "{Optimal, fast, and robust inference of reionization-era cosmology with the 21cmPIE-INN}",
@@ -52,9 +52,11 @@ If you use any part of this repository please cite the following paper:
     month = "1",
     year = "2024"
 }
-'''
+```
+
 When using the 3D CNN please cite:
-'''
+
+```
 @ARTICLE{2022arXiv220107587N,
        author = {{Neutsch}, S. and {Heneka}, C. and {Br{\"u}ggen}, M.},
         title = "{Inferring Astrophysics and Dark Matter Properties from 21cm Tomography using Deep Learning}",
@@ -70,5 +72,5 @@ archivePrefix = {arXiv},
        adsurl = {https://ui.adsabs.harvard.edu/abs/2022arXiv220107587N},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
-'''
+```
 
