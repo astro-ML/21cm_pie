@@ -73,7 +73,6 @@ class ConvNet3D(nn.Module):
             x = nn.Sigmoid()(self.out(x)) 
         else:
             x = self.out(x)
-
         return x
     
     def load_model(self, location: str) -> bool:
@@ -92,45 +91,3 @@ class ConvNet3D(nn.Module):
         except FileNotFoundError:
             return False
         
-
-class ConvNet3D_downsized(nn.Module):
-    
-    def __init__(self, in_ch=1, ch=32, N_parameter=6,sigmoid=False):
-        super().__init__()
-        self.conv1 = nn.Conv3d(in_ch, ch, kernel_size=(3,3,51), bias=True, stride=(1,1,51))
-        self.conv2 = nn.Conv3d(ch, ch, kernel_size=(3,3,2), bias=True)
-        self.conv3 = nn.Conv3d(ch, 2*ch, kernel_size=(3,3,2), bias=True)
-        self.conv3_zero = nn.Conv3d(2*ch, 2*ch, kernel_size=(3,3,2), bias=True, padding=(1,1,0))
-        self.conv4 = nn.Conv3d(2*ch, 4*ch, kernel_size=(3,3,2), bias=True)
-        self.conv4_zero = nn.Conv3d(4*ch, 4*ch, kernel_size=(3,3,2), bias=True, padding=(1,1,0))
-        self.max = nn.MaxPool3d(kernel_size=(2,2,1), stride=(2,2,1))
-        self.avg = nn.AvgPool3d(kernel_size = (13,13,18))
-        self.flatten = nn.Flatten()
-        self.linear1 = nn.Linear(128,128, bias=True)
-        self.linear2 = nn.Linear(128,128, bias=True)
-        self.linear3 = nn.Linear(128,128, bias=True)
-        self.out = nn.Linear(128, N_parameter, bias=True)
-        self.sigmoid = sigmoid
-    
-    def forward(self,x):
-        x = nn.ReLU()(self.conv1(x))
-        x = nn.ReLU()(self.conv2(x))
-        x = self.max(x)
-        x = nn.ReLU()(self.conv3(x))
-        x = nn.ReLU()(self.conv3_zero(x))
-        x = self.max(x)
-        x = nn.ReLU()(self.conv4(x))
-        x = nn.ReLU()(self.conv4_zero(x))
-        x = self.avg(x)
-        x = self.flatten(x)
-        x = nn.ReLU()(self.linear1(x))
-        x = nn.ReLU()(self.linear2(x))
-        x = nn.ReLU()(self.linear3(x))
-        #x = self.out(x)
-        if self.sigmoid:
-            x = nn.Sigmoid()(self.out(x))
-        else:
-            x = self.out(x)
-
-        return x
-    
