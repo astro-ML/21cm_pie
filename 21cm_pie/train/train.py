@@ -314,14 +314,14 @@ class Training:
         save_model_dir = self.save_dir + 'models/' + model + '/'
         if epoch == self.train_params['epochs']-1:
             logging.info('Saving final model')
-            if model == 'flow':
+            if (model == 'flow') or (model == 'both'):
                 torch.save(self.flow.state_dict(), save_model_dir+f'flow_final.pth')
-            elif model == 'cnn':
+            elif (model == 'cnn') or (model == 'both'):
                 torch.save(self.cnn.state_dict(), save_model_dir+f'cnn_final.pth')
         else: 
-            if model == 'flow':
+            if (model == 'flow') or (model == 'both'):
                 torch.save(self.flow.state_dict(), save_model_dir+f'flow_{epoch}.pth')
-            elif model == 'cnn':
+            elif (model == 'cnn') or (model == 'both'):
                 torch.save(self.cnn.state_dict(), save_model_dir+f'cnn_{epoch}.pth')
                 
     def train_network(self) -> None:
