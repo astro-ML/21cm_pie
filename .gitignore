@@ -1,8 +1,8 @@
 # virtual environment
 /venv
 
-#job script
-/params
+#param cards
+/params/** 
 !/params/data.yaml
 !/params/train.yaml
 !/params/plot.yaml
@@ -12,15 +12,27 @@
 21cm_pie.egg-info
 
 #output files
-/output
-# except best_models
-!/output/best_noise
-!/output/best_sim
+
+# Ignore all output except the trained models for noise and simulations
+!output/
+output/*
+!output/best_sim/
+!output/best_noise/
+output/best_sim/*
+output/best_noise/*
+!output/best_sim/models/
+!output/best_noise/models/
+
 
 # cache from 21cmFAST
 /.cache
 
 # data
-/simulations
-/nosie_sim
-/create_data
+/data/** 
+
+# tests
+/tests/**
+
+# python things
+__pycache__/
+**/__pycache__/
