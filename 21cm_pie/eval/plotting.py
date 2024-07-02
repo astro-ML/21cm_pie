@@ -86,8 +86,7 @@ class Plotting():
         self.test_paths = sorted(test_paths, key=lambda x: int(re.search(r'run(\d+)', x).group(1)))[4000:]
         logging.info(f"Found {len(self.test_paths)} test lightcones")
         self.output_dir = self.params['plot_dir'] + '/'
-        self.num_lightcones = len(self.test_paths)
-        self.cnn_pred, self.label = self.find_cnn_output()  
+        self.num_lightcones = len(self.test_paths)  
               
     def find_cnn_output(self, save_name:str = 'cnn_test_output.npz') -> Tuple[np.ndarray, np.ndarray]:
         """
@@ -208,6 +207,7 @@ class Plotting():
         Returns:
             None
         """
+        self.cnn_pred, self.label = self.find_cnn_output() 
         logging.info('Calculating statistics')
         names = [self.parameters[para][3] for para in range(len(self.parameters))]
         lab = [self.parameters[para][4] for para in range(len(self.parameters))]
@@ -354,8 +354,17 @@ class Plotting():
         Returns:
             Tuple[np.array, np.ndarray]: A tuple containing the rescaled label and generated samples.
         """
-        label = self.label[index]
-        cnn_pred = self.cnn_pred[index]
+        # check if the CNN output is already loaded
+        try:
+            label = self.label[index]
+            cnn_pred = self.cnn_pred[index]
+        except:
+            path = self.test_paths[index]
+            X, y = self.data_reader([path], self.device)
+            pred = self.cnn(X)
+            cnn_pred = pred.detach().cpu().numpy()
+            label = y.detach().cpu().numpy()
+            
         z = torch.randn((sample_size,len(self.parameters))).to(self.device)
         z = torch.randn((sample_size,len(self.parameters))).to(self.device)
         samples, _ = self.flow(z, c = [torch.Tensor(cnn_pred).repeat((sample_size,1)).to(self.device)], rev=True)
@@ -460,8 +469,13 @@ class Plotting():
         """
         logging.info('Make latent space plots')
         size = self.params['fontsize']
-        label_t = torch.tensor(self.label.astype('float32')).to(self.device)
-        pred_t = torch.Tensor(self.cnn_pred.astype('float32')).to(self.device)
+        try:
+            label_t = torch.tensor(self.label.astype('float32')).to(self.device)
+            pred_t = torch.Tensor(self.cnn_pred.astype('float32')).to(self.device)
+        except:
+            self.cnn_pred, self.label = self.find_cnn_output()
+            label_t = torch.tensor(self.label.astype('float32')).to(self.device)
+            pred_t = torch.Tensor(self.cnn_pred.astype('float32')).to(self.device)
         z, _ = self.flow(label_t, c=[pred_t])
         samp = z.detach().cpu().numpy()
         names = ["z_%s" % i for i in range(len(self.parameters))]
