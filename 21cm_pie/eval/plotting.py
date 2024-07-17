@@ -85,7 +85,7 @@ class Plotting():
         test_paths = glob.glob(self.params['data_path']+'/run*.npz')
         self.test_paths = sorted(test_paths, key=lambda x: int(re.search(r'run(\d+)', x).group(1)))[4000:]
         logging.info(f"Found {len(self.test_paths)} test lightcones")
-        self.output_dir = self.params['plot_dir'] + '/'
+        self.output_dir = self.params['plot_dir']
         self.num_lightcones = len(self.test_paths)  
               
     def find_cnn_output(self, save_name:str = 'cnn_test_output.npz') -> Tuple[np.ndarray, np.ndarray]:
