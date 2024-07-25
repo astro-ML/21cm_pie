@@ -68,7 +68,10 @@ def setup_dir(file: str) -> str:
         full_run_name = "output/" + params['name'] + "_" + now.strftime("%Y%m%d")
     os.makedirs(full_run_name, exist_ok=True)
     os.makedirs(full_run_name+'/models/', exist_ok=True)
-    shutil.copy(file, full_run_name)
+    try:
+        shutil.copy(file, full_run_name)
+    except shutil.SameFileError:
+        pass
     return full_run_name
 
 def prep_output(file: str) -> Tuple[str, str]:
@@ -93,7 +96,10 @@ def prep_output(file: str) -> Tuple[str, str]:
         sys.exit()
     plot_dir = run_name + '/' + plot_dir + '/'
     os.makedirs(plot_dir, exist_ok=True)
-    shutil.copy(file, plot_dir)
+    try:
+        shutil.copy(file, run_name)
+    except shutil.SameFileError:
+        pass
     return run_name, plot_dir
     
     
