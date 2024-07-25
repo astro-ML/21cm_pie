@@ -316,12 +316,12 @@ class Training:
             logging.info('Saving final model')
             if (model == 'flow') or (model == 'both'):
                 torch.save(self.flow.state_dict(), save_model_dir+f'flow_final.pth')
-            elif (model == 'cnn') or (model == 'both'):
+            if (model == 'cnn') or (model == 'both'):
                 torch.save(self.cnn.state_dict(), save_model_dir+f'cnn_final.pth')
         else: 
             if (model == 'flow') or (model == 'both'):
                 torch.save(self.flow.state_dict(), save_model_dir+f'flow_{epoch}.pth')
-            elif (model == 'cnn') or (model == 'both'):
+            if (model == 'cnn') or (model == 'both'):
                 torch.save(self.cnn.state_dict(), save_model_dir+f'cnn_{epoch}.pth')
                 
     def train_network(self) -> None:
