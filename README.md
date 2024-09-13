@@ -26,15 +26,15 @@ Simulating data with [21cmFAST][21cmFAST] and adding noise with [21cmSense][21cm
 [21cmSense]: https://github.com/jpober/21cmSense
 
 ```
-21cm_pie data params/data.yaml --verbose
+twentyone_cm_pie data params/data.yaml --verbose
 ```
 Training the model, typically done in three stages, first the 3D CNN, then the INN and finally both:
 ```
-21cm_pie train params/train.yaml --verbose
+twentyone_cm_pie train params/train.yaml --verbose
 ```
 Analysing the performance and creating inference plots
 ```
-21cm_pie plot params/plot.yaml --verbose
+twentyone_cm_pie plot params/plot.yaml --verbose
 ```
 Trained networks for the inference of simulated (with and without noise) data are stored in ```output/```.
 

@@ -9,7 +9,7 @@
 
 
 #egg file
-21cm_pie.egg-info
+twentyone_cm_pie.egg-info
 
 #output files
 
@@ -23,6 +23,8 @@ output/best_noise/*
 !output/best_sim/models/
 !output/best_noise/models/
 
+#  Animation files
+/animation
 
 # cache from 21cmFAST
 /.cache
@@ -36,3 +38,4 @@ output/best_noise/*
 # python things
 __pycache__/
 **/__pycache__/
+*.pyc

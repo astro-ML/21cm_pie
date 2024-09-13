@@ -8,8 +8,8 @@ with open("README.md", "r") as fh:
 requirements = ["numpy", "scipy", "torch", "FrEIA", "pyyaml", "21cmFAST", "psutil", "getdist"]
 
 setup(
-    name="21cm_pie",
-    version="1.0.0",
+    name="twentyone_cm_pie",
+    version="1.0.1",
     author="Benedikt Schosser",
     author_email="schosser@stud.uni-heidelberg.de",
     description="Simulation based inference for 21cm cosmology",
@@ -24,5 +24,5 @@ setup(
     python_requires=">=3.6",
     packages=find_packages(exclude=["tests"]),
     install_requires=requirements,
-    entry_points={"console_scripts": ["21cm_pie=21cm_pie.__main__:main"]},
+    entry_points={"console_scripts": ["twentyone_cm_pie=twentyone_cm_pie.__main__:main"]},
 )

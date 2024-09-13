@@ -33,7 +33,7 @@ class ReadData():
         self.img_length = img_length
         self.paras = 6
 
-    def prepare(self, files: List[str]) -> Tuple[np.ndarray, np.array]:
+    def prepare(self, files: List[str], hdf=False) -> Tuple[np.ndarray, np.array]:
         """
         Prepares the data by reading and normalizing it.
 
@@ -54,7 +54,6 @@ class ReadData():
                 cones = np.load(files[i])
                 image[i] = cones['image']
                 label[i] = cones['label']
-                valid_indices.append(i)
             except:
                 logging.info('bad file, zip:', files[i]) 
         # normalize the data
@@ -65,7 +64,7 @@ class ReadData():
         labelNorm = np.array([9.7, 0.2, 1400, 4, 1.3, 240])
         for j in range(self.paras):
             label[:, j] = (label[:, j] - labelMean[j]) / labelNorm[j]
-        return image[valid_indices], label[valid_indices]
+        return image[valid_indices], label[valid_indices], end-start
 
     def read(self, paths: List[str], device: str) -> Tuple[torch.Tensor, torch.Tensor]:
         """
