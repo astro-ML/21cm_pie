@@ -94,6 +94,7 @@ class Simulation:
         WDM, OMm, E0, LX, Tvir, Zeta = parameters
         logging.info(f'Running simulation with parameters: {parameters}')
         p21c.inputs.global_params.M_WDM = WDM
+        p21c.inputs.global_params.P_CUTOFF = True
         lightcone = p21c.run_lightcone(
             redshift=Z_MIN,
             cosmo_params=p21c.CosmoParams(OMm=OMm),
